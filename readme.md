@@ -216,7 +216,7 @@ Prompt recomendado
 Ayúdame a codificar pero a aprender mientras lo hago. Explica cada decisión de estructura de datos que tomes y descríbemela como si fuera nuevo en programación. + estructura en texto plano del proyecto.
 
 Esta es la estructura del proyecto: Entran aqui y le pegan el contenido a gpt, es una versión en texto plano del proyecto:
-https://github.com/Ing-jdum/PFinalCPP/tree/development
+https://uithub.com/Ing-jdum/PFinalCPP/tree/development
 Pídele que comente bien su código. Pregunta todo lo que no entiendas.
 
 ## 📦: Cómo hacer commit y push en GitHub
