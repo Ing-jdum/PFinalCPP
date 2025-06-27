@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "../core/UnitCategory.h"
+#include "../utils/Validation.h"
 
 class UnitRegistry {
 private:

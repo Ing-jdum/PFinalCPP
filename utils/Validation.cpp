@@ -17,7 +17,7 @@ bool Validation::isValidDouble(const std::string& str) {
         return false;
     }
 
-    static const std::regex pattern("(^([+-]?(?:[[:d:]]+\.?|[[:d:]]*\.[[:d:]]+))(?:[Ee][+-]?[[:d:]]+)?$)");
+    static const std::regex pattern(R"(^([+-]?(?:[[:d:]]+\.?|[[:d:]]*\.[[:d:]]+))(?:[Ee][+-]?[[:d:]]+)?$)");
 
     return std::regex_match(str, pattern);
 }
@@ -84,7 +84,7 @@ std::string Validation::toLowerCase(const std::string& str) {
     // 3. Return the transformed string
     // Example: "Hello World" becomes "hello world"
     // Hint: std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    std::string str_lower_case = str;
-    std::transform(str_lower_case.begin(), str_lower_case.end(), str_lower_case.begin(), ::tolower);
-    return str_lower_case; 
+    std::string result = str;
+    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result; 
 }
