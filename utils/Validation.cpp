@@ -13,7 +13,13 @@ bool Validation::isValidDouble(const std::string& str) {
     //    - Optional scientific notation (e/E with optional sign and digits)
     // 3. Use std::regex_match with pattern: R"(^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?))"
     // Examples: "123", "-45.67", "1.23e-4", "+0.5"
-    return false; // Remove this line when implementing
+    if (str.empty()) {
+        return false;
+    }
+
+    static const std::regex pattern("(^([+-]?(?:[[:d:]]+\.?|[[:d:]]*\.[[:d:]]+))(?:[Ee][+-]?[[:d:]]+)?$)");
+
+    return std::regex_match(str, pattern);
 }
 
 bool Validation::isValidInt(const std::string& str) {
@@ -24,7 +30,13 @@ bool Validation::isValidInt(const std::string& str) {
     //    - One or more digits
     // 3. Use std::regex_match with pattern: R"(^[-+]?[0-9]+$)"
     // Examples: "123", "-45", "+67"
-    return false; // Remove this line when implementing
+    if (str.empty()) {
+        return false;
+    }
+
+    static const std::regex pattern("(^[-+]?[0-9]+$)");
+
+    return std::regex_match(str, pattern);
 }
 
 bool Validation::isValidUnitName(const std::string& name) {
@@ -36,7 +48,14 @@ bool Validation::isValidUnitName(const std::string& name) {
     //    - Reject any other characters
     // 3. Return true only if all characters are valid
     // Examples: "meter", "foot_per_second", "mile-per-hour"
-    return false; // Remove this line when implementing
+      // Examples: "123", "-45", "+67"
+    if (name.empty()) {
+        return false;
+    }
+
+    static const std::regex pattern("(^[a-zA-Z0-9_-]+$)");
+
+    return std::regex_match(name, pattern);
 }
 
 std::string Validation::trim(const std::string& str) {
@@ -47,7 +66,15 @@ std::string Validation::trim(const std::string& str) {
     // 3. Find the last non-whitespace character using find_last_not_of()
     // 4. Use substr() to extract the trimmed substring
     // Example: "  hello world  " becomes "hello world"
-    return ""; // Remove this line when implementing
+    const std::string whitespace = " \t\n\r";
+
+    size_t start = str.find_first_not_of(whitespace);
+    if (start == std::string::npos) {
+        return "";
+    }
+
+    size_t end = str.find_last_not_of(whitespace);
+    return str.substr(start, end - start + 1);
 }
 
 std::string Validation::toLowerCase(const std::string& str) {
@@ -57,5 +84,7 @@ std::string Validation::toLowerCase(const std::string& str) {
     // 3. Return the transformed string
     // Example: "Hello World" becomes "hello world"
     // Hint: std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return ""; // Remove this line when implementing
+    std::string str_lower_case = str;
+    std::transform(str_lower_case.begin(), str_lower_case.end(), str_lower_case.begin(), ::tolower);
+    return str_lower_case; 
 }
