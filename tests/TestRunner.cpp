@@ -300,25 +300,70 @@ public:
     void runAllTests() {
         std::cout << "Starting Unit Converter Test Suite..." << std::endl;
         std::cout << "========================================" << std::endl;
-        
-        testUnitClass();
-        testUnitCategoryClass();
-        testConverterClass();
-        testUnitRegistryClass();
-        testValidationClass();
-        
+    
+        try {
+            testUnitClass();
+        } catch (const std::exception& ex) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitClass threw an exception: " << ex.what() << std::endl;
+        } catch (...) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitClass threw an unknown exception." << std::endl;
+        }
+    
+        try {
+            testUnitCategoryClass();
+        } catch (const std::exception& ex) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitCategoryClass threw an exception: " << ex.what() << std::endl;
+        } catch (...) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitCategoryClass threw an unknown exception." << std::endl;
+        }
+    
+        try {
+            testConverterClass();
+        } catch (const std::exception& ex) {
+            totalTests++;
+            std::cout << "[FAIL] testConverterClass threw an exception: " << ex.what() << std::endl;
+        } catch (...) {
+            totalTests++;
+            std::cout << "[FAIL] testConverterClass threw an unknown exception." << std::endl;
+        }
+    
+        try {
+            testUnitRegistryClass();
+        } catch (const std::exception& ex) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitRegistryClass threw an exception: " << ex.what() << std::endl;
+        } catch (...) {
+            totalTests++;
+            std::cout << "[FAIL] testUnitRegistryClass threw an unknown exception." << std::endl;
+        }
+    
+        try {
+            testValidationClass();
+        } catch (const std::exception& ex) {
+            totalTests++;
+            std::cout << "[FAIL] testValidationClass threw an exception: " << ex.what() << std::endl;
+        } catch (...) {
+            totalTests++;
+            std::cout << "[FAIL] testValidationClass threw an unknown exception." << std::endl;
+        }
+    
         std::cout << "\n========================================" << std::endl;
         std::cout << "Test Results: " << passedTests << "/" << totalTests << " tests passed" << std::endl;
-        
+    
         if (passedTests == totalTests) {
-            std::cout << "🎉 All tests passed! Great job!" << std::endl;
+            std::cout << "[PASS] All tests passed! Great job!" << std::endl;
         } else {
-            std::cout << "❌ " << (totalTests - passedTests) << " tests failed. Keep working!" << std::endl;
+            std::cout << "[FAIL] " << (totalTests - passedTests) << " tests failed. Keep working!" << std::endl;
         }
-        
+    
         double percentage = (double)passedTests / totalTests * 100;
         std::cout << "Success rate: " << std::fixed << std::setprecision(1) << percentage << "%" << std::endl;
     }
+    
 };
 
 int main() {
