@@ -20,7 +20,7 @@ public:
     const std::string& getBaseUnitName() const;
     
     void addUnit(const std::string& unitName, double conversionFactor);
-    Unit* findUnit(const std::string& unitName) const;
+    const Unit& findUnit(const std::string& unitName) const;
     
     std::vector<std::string> getUnitNames() const;
     size_t getUnitCount() const;
