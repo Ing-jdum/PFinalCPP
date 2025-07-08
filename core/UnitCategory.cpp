@@ -1,5 +1,6 @@
 
 #include "UnitCategory.h"
+#include <stdexcept>
 #include <algorithm>
 
 UnitCategory::UnitCategory(const std::string& name, const std::string& baseUnitName) 
@@ -25,13 +26,13 @@ void UnitCategory::addUnit(const std::string& unitName, double conversionFactor)
     // Note: Don't add duplicate units (check if unit already exists)
 }
 
-Unit* UnitCategory::findUnit(const std::string& unitName) const {
-    // TODO: Find and return a unit by name, or nullptr if not found
+const Unit& UnitCategory::findUnit(const std::string& unitName) const {
+    // TODO: Find and return a unit by name, throw exception if not found
     // 1. Use std::find_if to search through the units vector
     // 2. Compare unit names (case-sensitive)
-    // 3. Return pointer to the Unit if found, nullptr otherwise
+    // 3. Return reference to the Unit if found, throw std::runtime_error if not found
     // Hint: Use a lambda function for the comparison
-    return nullptr; // Remove this line when implementing
+    throw std::runtime_error("Unit not found"); // Remove this line when implementing
 }
 
 std::vector<std::string> UnitCategory::getUnitNames() const {

@@ -2,12 +2,11 @@
 #include "Converter.h"
 #include <stdexcept>
 
-double Converter::convert(double value, const Unit* fromUnit, const Unit* toUnit) {
+double Converter::convert(double value, const Unit& fromUnit, const Unit& toUnit) {
     // TODO: Convert a value between two units in the same category
-    // 1. Check if both units are valid (not nullptr)
-    // 2. Convert the value to the base unit using fromUnit->toBase(value)
-    // 3. Convert from base unit to target unit using toUnit->fromBase(baseValue)
-    // 4. Return the final converted value
+    // 1. Convert the value to the base unit using fromUnit.toBase(value)
+    // 2. Convert from base unit to target unit using toUnit.fromBase(baseValue)
+    // 3. Return the final converted value
     // This is the core conversion logic for linear unit conversions
     return 0.0; // Remove this line when implementing
 }
@@ -18,8 +17,8 @@ double Converter::convertInCategory(double value, const std::string& fromUnit,
     // 1. Check if this is a temperature category (special handling required)
     // 2. If temperature, call convertTemperature() instead
     // 3. Otherwise, find the fromUnit and toUnit in the category
-    // 4. Call the convert() method with the found Unit pointers
-    // 5. Handle cases where units are not found (throw exception)
+    // 4. Call the convert() method with the found Unit references
+    // 5. Handle cases where units are not found (exceptions will be thrown by findUnit)
     return 0.0; // Remove this line when implementing
 }
 

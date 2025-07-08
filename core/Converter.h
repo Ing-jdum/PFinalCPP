@@ -6,7 +6,7 @@
 
 class Converter {
 public:
-    static double convert(double value, const Unit* fromUnit, const Unit* toUnit);
+    static double convert(double value, const Unit& fromUnit, const Unit& toUnit);
     static double convertInCategory(double value, const std::string& fromUnit, 
                                   const std::string& toUnit, const UnitCategory& category);
     

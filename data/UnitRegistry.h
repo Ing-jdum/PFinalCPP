@@ -15,7 +15,7 @@ private:
 public:
     UnitRegistry();
     
-    UnitCategory* findCategory(const std::string& categoryName) const;
+    const UnitCategory& findCategory(const std::string& categoryName) const;
     std::vector<std::string> getCategoryNames() const;
     
     bool addUnitToCategory(const std::string& categoryName, 
