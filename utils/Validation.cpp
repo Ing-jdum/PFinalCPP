@@ -28,15 +28,20 @@ bool Validation::isValidInt(const std::string& str) {
 }
 
 bool Validation::isValidUnitName(const std::string& name) {
-    // TODO: Validate if a string is a valid unit name
     // 1. Check if name is empty (return false)
-    // 2. Check each character in the name:
-    //    - Allow alphanumeric characters (std::isalnum)
-    //    - Allow underscore (_) and hyphen (-)
-    //    - Reject any other characters
+    if (name.empty()) {
+        return false;
+    }
+
+    // 2. Check each character
+    for (char ch : name) {
+        if (!std::isalnum(ch) && ch != '_' && ch != '-') {
+            return false;
+        }
+    }
+
     // 3. Return true only if all characters are valid
-    // Examples: "meter", "foot_per_second", "mile-per-hour"
-    return false; // Remove this line when implementing
+    return true;
 }
 
 std::string Validation::trim(const std::string& str) {

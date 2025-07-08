@@ -9,9 +9,7 @@ Unit::Unit(const std::string& name, double conversionFactor)
 }
 
 const std::string& Unit::getName() const {
-    // TODO: Return the name of this unit
-    // This should be a simple getter that returns the unit's name
-    // Example: "meter", "kilometer", "celsius", etc.
+    return name;
 }
 
 double Unit::getConversionFactor() const {

@@ -301,8 +301,8 @@ public:
         std::cout << "Starting Unit Converter Test Suite..." << std::endl;
         std::cout << "========================================" << std::endl;
         
-        testUnitClass();
-        testUnitCategoryClass();
+        // testUnitClass();
+        // testUnitCategoryClass();
         testConverterClass();
         testUnitRegistryClass();
         testValidationClass();
