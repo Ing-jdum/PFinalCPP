@@ -69,16 +69,13 @@ void Menu::performConversion() {
     }
 
     std::string selectedCategory = categories[categoryChoice - 1];
-    UnitCategory* category = registry.findCategory(selectedCategory);
-
-    if (!category) {
-        std::cout << "Category not found." << std::endl;
-        return;
-    }
-
-    // Show available units in category
-    std::cout << "\nAvailable units in " << selectedCategory << ":" << std::endl;
-    auto units = category->getUnitNames();
+    
+    try {
+        const UnitCategory& category = registry.findCategory(selectedCategory);
+        
+        // Show available units in category
+        std::cout << "\nAvailable units in " << selectedCategory << ":" << std::endl;
+        auto units = category.getUnitNames();
     for (const auto& unit : units) {
         std::cout << "- " << unit << std::endl;
     }
@@ -94,11 +91,14 @@ void Menu::performConversion() {
     }
 
     try {
-        double result = Converter::convertInCategory(value, fromUnit, toUnit, *category);
-        std::cout << std::fixed << std::setprecision(6);
-        std::cout << value << " " << fromUnit << " = " << result << " " << toUnit << std::endl;
+            double result = Converter::convertInCategory(value, fromUnit, toUnit, category);
+            std::cout << std::fixed << std::setprecision(6);
+            std::cout << value << " " << fromUnit << " = " << result << " " << toUnit << std::endl;
+        } catch (const std::exception& e) {
+            std::cout << "Conversion failed: " << e.what() << std::endl;
+        }
     } catch (const std::exception& e) {
-        std::cout << "Conversion failed: " << e.what() << std::endl;
+        std::cout << "Category not found: " << e.what() << std::endl;
     }
 }
 
@@ -117,13 +117,7 @@ void Menu::addNewUnit() {
     }
 
     std::string selectedCategory = categories[categoryChoice - 1];
-    UnitCategory* category = registry.findCategory(selectedCategory);
-
-    if (!category) {
-        std::cout << "Category not found." << std::endl;
-        return;
-    }
-
+    
     // Check if this category allows adding new units
     if (!registry.canAddUnitsToCategory(selectedCategory)) {
         std::cout << "Cannot add new units to " << selectedCategory << " category." << std::endl;
@@ -131,12 +125,15 @@ void Menu::addNewUnit() {
         return;
     }
 
-    // Show existing units
-    std::cout << "\nExisting units in " << selectedCategory << ":" << std::endl;
-    auto units = category->getUnitNames();
-    for (const auto& unit : units) {
-        std::cout << "- " << unit << std::endl;
-    }
+    try {
+        const UnitCategory& category = registry.findCategory(selectedCategory);
+        
+        // Show existing units
+        std::cout << "\nExisting units in " << selectedCategory << ":" << std::endl;
+        auto units = category.getUnitNames();
+        for (const auto& unit : units) {
+            std::cout << "- " << unit << std::endl;
+        }
 
     std::string newUnitName = InputHandler::getString("New unit name: ");
     if (!Validation::isValidUnitName(newUnitName)) {
@@ -148,9 +145,12 @@ void Menu::addNewUnit() {
     double conversionFactor = InputHandler::getDouble("Conversion factor (how many reference units = 1 new unit): ");
 
     if (registry.addUnitToCategory(selectedCategory, newUnitName, referenceUnit, conversionFactor)) {
-        std::cout << "Unit '" << newUnitName << "' added successfully!" << std::endl;
-        std::cout << "1 " << newUnitName << " = " << conversionFactor << " " << referenceUnit << std::endl;
-    } else {
-        std::cout << "Failed to add unit. Check that the reference unit exists." << std::endl;
+            std::cout << "Unit '" << newUnitName << "' added successfully!" << std::endl;
+            std::cout << "1 " << newUnitName << " = " << conversionFactor << " " << referenceUnit << std::endl;
+        } else {
+            std::cout << "Failed to add unit. Check that the reference unit exists." << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cout << "Category not found: " << e.what() << std::endl;
     }
 }

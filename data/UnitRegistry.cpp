@@ -1,5 +1,6 @@
 #include "UnitRegistry.h"
 #include <algorithm>
+#include <stdexcept>
 
 UnitRegistry::UnitRegistry() {
     // TODO: Initialize the registry with default categories
@@ -25,12 +26,12 @@ void UnitRegistry::initializeDefaultCategories() {
 }
 
 const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) const {
-    // TODO: Find and return a category by name, throw exception if not found
+    // TODO: Find a category by name and return reference to it
     // 1. Use std::find_if to search through the categories vector
-    // 2. Compare category names (case-sensitive)
-    // 3. Return reference to the UnitCategory if found, throw std::runtime_error if not found
-    // Hint: Use a lambda function for the comparison
-    throw std::runtime_error("Category not found"); // Remove this line when implementing
+    // 2. Compare category names using a lambda function
+    // 3. Return reference to the category if found, throw exception otherwise
+    // Hint: categories is a vector of unique_ptr, so use ->get() to get raw pointer
+    throw std::runtime_error("Category not found");
 }
 
 std::vector<std::string> UnitRegistry::getCategoryNames() const {

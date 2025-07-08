@@ -72,36 +72,51 @@ public:
                 distance.getName() == "Distance");
         
         // Test that base unit was created
-        Unit* baseUnit = distance.findUnit("meter");
-        runTest("Base unit exists after construction", baseUnit != nullptr);
-        if (baseUnit) {
-            runTest("Base unit has correct name", baseUnit->getName() == "meter");
+        try {
+            const Unit& baseUnit = distance.findUnit("meter");
+            runTest("Base unit exists after construction", true);
+            runTest("Base unit has correct name", baseUnit.getName() == "meter");
             runTest("Base unit has factor 1.0", 
-                    doubleEqual(baseUnit->getConversionFactor(), 1.0));
+                    doubleEqual(baseUnit.getConversionFactor(), 1.0));
+        } catch (...) {
+            runTest("Base unit exists after construction", false);
+            runTest("Base unit has correct name", false);
+            runTest("Base unit has factor 1.0", false);
         }
         
         // Test adding units
         distance.addUnit("kilometer", 1000.0);
         distance.addUnit("centimeter", 0.01);
         
-        Unit* km = distance.findUnit("kilometer");
-        Unit* cm = distance.findUnit("centimeter");
-        
-        runTest("Added kilometer unit exists", km != nullptr);
-        runTest("Added centimeter unit exists", cm != nullptr);
-        
-        if (km) {
+        try {
+            const Unit& km = distance.findUnit("kilometer");
+            runTest("Added kilometer unit exists", true);
             runTest("Kilometer has correct factor", 
-                    doubleEqual(km->getConversionFactor(), 1000.0));
+                    doubleEqual(km.getConversionFactor(), 1000.0));
+        } catch (...) {
+            runTest("Added kilometer unit exists", false);
+            runTest("Kilometer has correct factor", false);
         }
-        if (cm) {
+        
+        try {
+            const Unit& cm = distance.findUnit("centimeter");
+            runTest("Added centimeter unit exists", true);
             runTest("Centimeter has correct factor", 
-                    doubleEqual(cm->getConversionFactor(), 0.01));
+                    doubleEqual(cm.getConversionFactor(), 0.01));
+        } catch (...) {
+            runTest("Added centimeter unit exists", false);
+            runTest("Centimeter has correct factor", false);
         }
         
         // Test findUnit with non-existent unit
-        runTest("findUnit returns nullptr for non-existent unit", 
-                distance.findUnit("nonexistent") == nullptr);
+        bool foundNonExistent = false;
+        try {
+            distance.findUnit("nonexistent");
+            foundNonExistent = true;
+        } catch (...) {
+            foundNonExistent = false;
+        }
+        runTest("findUnit throws exception for non-existent unit", !foundNonExistent);
         
         // Test getUnitNames
         std::vector<std::string> unitNames = distance.getUnitNames();
@@ -126,17 +141,17 @@ public:
         
         // Test basic convert method
         runTest("Convert 5 km to meters", 
-                doubleEqual(Converter::convert(5.0, &kilometer, &meter), 5000.0));
+                doubleEqual(Converter::convert(5.0, kilometer, meter), 5000.0));
         runTest("Convert 5000 meters to km", 
-                doubleEqual(Converter::convert(5000.0, &meter, &kilometer), 5.0));
+                doubleEqual(Converter::convert(5000.0, meter, kilometer), 5.0));
         runTest("Convert 100 cm to meters", 
-                doubleEqual(Converter::convert(100.0, &centimeter, &meter), 1.0));
+                doubleEqual(Converter::convert(100.0, centimeter, meter), 1.0));
         runTest("Convert 1 meter to cm", 
-                doubleEqual(Converter::convert(1.0, &meter, &centimeter), 100.0));
+                doubleEqual(Converter::convert(1.0, meter, centimeter), 100.0));
         
         // Test same unit conversion
         runTest("Convert same unit returns same value", 
-                doubleEqual(Converter::convert(42.0, &meter, &meter), 42.0));
+                doubleEqual(Converter::convert(42.0, meter, meter), 42.0));
         
         // Test temperature conversions
         runTest("Celsius to Fahrenheit: 0°C = 32°F", 
@@ -200,22 +215,42 @@ public:
         runTest("Registry has Mass category", hasMass);
         
         // Test findCategory
-        UnitCategory* distanceCategory = registry.findCategory("Distance");
-        runTest("findCategory returns valid pointer for existing category", 
-                distanceCategory != nullptr);
-        runTest("findCategory returns nullptr for non-existent category", 
-                registry.findCategory("NonExistent") == nullptr);
-        
-        if (distanceCategory) {
+        try {
+            const UnitCategory& distanceCategory = registry.findCategory("Distance");
+            runTest("findCategory returns valid reference for existing category", true);
             runTest("Found category has correct name", 
-                    distanceCategory->getName() == "Distance");
+                    distanceCategory.getName() == "Distance");
             
             // Test that default units exist
-            runTest("Distance category has meter unit", 
-                    distanceCategory->findUnit("meter") != nullptr);
-            runTest("Distance category has kilometer unit", 
-                    distanceCategory->findUnit("kilometer") != nullptr);
+            try {
+                distanceCategory.findUnit("meter");
+                runTest("Distance category has meter unit", true);
+            } catch (...) {
+                runTest("Distance category has meter unit", false);
+            }
+            
+            try {
+                distanceCategory.findUnit("kilometer");
+                runTest("Distance category has kilometer unit", true);
+            } catch (...) {
+                runTest("Distance category has kilometer unit", false);
+            }
+        } catch (...) {
+            runTest("findCategory returns valid reference for existing category", false);
+            runTest("Found category has correct name", false);
+            runTest("Distance category has meter unit", false);
+            runTest("Distance category has kilometer unit", false);
         }
+        
+        // Test findCategory with non-existent category
+        bool foundNonExistent = false;
+        try {
+            registry.findCategory("NonExistent");
+            foundNonExistent = true;
+        } catch (...) {
+            foundNonExistent = false;
+        }
+        runTest("findCategory throws exception for non-existent category", !foundNonExistent);
         
         // Test canAddUnitsToCategory
         runTest("Can add units to Distance category", 
@@ -229,13 +264,20 @@ public:
         bool addSuccess = registry.addUnitToCategory("Distance", "inch", "meter", 0.0254);
         runTest("Successfully added inch to Distance category", addSuccess);
         
-        if (distanceCategory) {
-            Unit* inch = distanceCategory->findUnit("inch");
-            runTest("Added inch unit exists", inch != nullptr);
-            if (inch) {
+        try {
+            const UnitCategory& distanceCategory = registry.findCategory("Distance");
+            try {
+                const Unit& inch = distanceCategory.findUnit("inch");
+                runTest("Added inch unit exists", true);
                 runTest("Inch has correct conversion factor", 
-                        doubleEqual(inch->getConversionFactor(), 0.0254));
+                        doubleEqual(inch.getConversionFactor(), 0.0254));
+            } catch (...) {
+                runTest("Added inch unit exists", false);
+                runTest("Inch has correct conversion factor", false);
             }
+        } catch (...) {
+            runTest("Added inch unit exists", false);
+            runTest("Inch has correct conversion factor", false);
         }
         
         // Test adding unit to temperature (should fail)
