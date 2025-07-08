@@ -25,13 +25,13 @@ void UnitRegistry::initializeDefaultCategories() {
     // Use std::make_unique to create categories and add them to the categories vector
 }
 
-UnitCategory* UnitRegistry::findCategory(const std::string& categoryName) const {
-    // TODO: Find a category by name and return pointer to it
+const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) const {
+    // TODO: Find a category by name and return reference to it
     // 1. Use std::find_if to search through the categories vector
     // 2. Compare category names using a lambda function
-    // 3. Return pointer to the category if found, nullptr otherwise
+    // 3. Return reference to the category if found, throw exception otherwise
     // Hint: categories is a vector of unique_ptr, so use ->get() to get raw pointer
-    return nullptr;
+    throw std::runtime_error("Category not found");
 }
 
 std::vector<std::string> UnitRegistry::getCategoryNames() const {

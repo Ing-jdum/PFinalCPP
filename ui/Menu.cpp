@@ -69,16 +69,13 @@ void Menu::performConversion() {
     }
 
     std::string selectedCategory = categories[categoryChoice - 1];
-    UnitCategory* category = registry.findCategory(selectedCategory);
-
-    if (!category) {
-        std::cout << "Category not found." << std::endl;
-        return;
-    }
-
-    // Show available units in category
-    std::cout << "\nAvailable units in " << selectedCategory << ":" << std::endl;
-    auto units = category->getUnitNames();
+    
+    try {
+        const UnitCategory& category = registry.findCategory(selectedCategory);
+        
+        // Show available units in category
+        std::cout << "\nAvailable units in " << selectedCategory << ":" << std::endl;
+        auto units = category.getUnitNames();
     for (const auto& unit : units) {
         std::cout << "- " << unit << std::endl;
     }
@@ -94,11 +91,14 @@ void Menu::performConversion() {
     }
 
     try {
-        double result = Converter::convertInCategory(value, fromUnit, toUnit, *category);
-        std::cout << std::fixed << std::setprecision(6);
-        std::cout << value << " " << fromUnit << " = " << result << " " << toUnit << std::endl;
+            double result = Converter::convertInCategory(value, fromUnit, toUnit, category);
+            std::cout << std::fixed << std::setprecision(6);
+            std::cout << value << " " << fromUnit << " = " << result << " " << toUnit << std::endl;
+        } catch (const std::exception& e) {
+            std::cout << "Conversion failed: " << e.what() << std::endl;
+        }
     } catch (const std::exception& e) {
-        std::cout << "Conversion failed: " << e.what() << std::endl;
+        std::cout << "Category not found: " << e.what() << std::endl;
     }
 }
 
