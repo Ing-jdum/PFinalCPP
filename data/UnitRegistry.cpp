@@ -26,7 +26,6 @@ void UnitRegistry::initializeDefaultCategories() {
     //
 
     UnitCategory distance("Distance", "meter");
-    distance.addUnit("meter", 1.0);
     distance.addUnit("kilometer", 1000.0);
     distance.addUnit("centimeter", 0.01);
     distance.addUnit("millimeter", 0.001);

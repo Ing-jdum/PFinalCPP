@@ -23,7 +23,14 @@ double Converter::convertInCategory(double value, const std::string& fromUnit,
     // 3. Otherwise, find the fromUnit and toUnit in the category
     // 4. Call the convert() method with the found Unit references
     // 5. Handle cases where units are not found (exceptions will be thrown by findUnit)
-    return 0.0; // Remove this line when implementing
+    if(Validation::toLowerCase(category.getName()) == "temperature"){
+        return convertTemperature(value, fromUnit, toUnit);
+    }
+
+    const Unit& from = category.findUnit(fromUnit);
+    const Unit& to = category.findUnit(toUnit);
+
+    return convert(value, from, to);
 }
 
 double Converter::convertTemperature(double value, const std::string& fromUnit, const std::string& toUnit) {

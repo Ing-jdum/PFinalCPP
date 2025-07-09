@@ -61,40 +61,43 @@ bool Validation::isValidUnitName(const std::string& name) {
 }
 
 std::string Validation::trim(const std::string& str) {
-    // TODO: Remove whitespace from beginning and end of string
-    // 1. Find the first non-whitespace character using find_first_not_of()
-    //    - Search for characters not in " \t\n\r"
-    // 2. If no non-whitespace found, return empty string
-    // 3. Find the last non-whitespace character using find_last_not_of()
-    // 4. Use substr() to extract the trimmed substring
-    // Example: "  hello world  " becomes "hello world"
-    // Step 1: Find the first non-space character
-    
-    int start = 0;
-    for (int i = 0; i < str.length(); i++) {
-        if (str[i] != ' ') {
+    const std::string WHITESPACE = " \t\n\r";
+
+    // Step 1: Find the first non-whitespace character
+    size_t start = 0;
+    bool foundStart = false;
+    for (size_t i = 0; i < str.length(); i++) {
+        if (WHITESPACE.find(str[i]) == std::string::npos) {
             start = i;
+            foundStart = true;
             break;
         }
     }
 
-    // Step 2: Find the last non-space character
-    int end = str.length() - 1;
-    for (int i = str.length() - 1; i >= 0; i--) {
-        if (str[i] != ' ') {
+    // If no non-whitespace character was found, return empty string
+    if (!foundStart) {
+        return "";
+    }
+
+    // Step 2: Find the last non-whitespace character
+    size_t end = str.length() - 1;
+    for (size_t i = str.length(); i-- > 0;) {
+        if (WHITESPACE.find(str[i]) == std::string::npos) {
             end = i;
             break;
         }
     }
 
-    // Step 3: Create the trimmed string
+    // Step 3: Build and return the trimmed string
     std::string result = "";
-    for (int i = start; i <= end; i++) {
+    for (size_t i = start; i <= end; i++) {
         result += str[i];
     }
 
     return result;
 }
+
+
 
 std::string Validation::toLowerCase(const std::string& str) {
     std::string result = str;
