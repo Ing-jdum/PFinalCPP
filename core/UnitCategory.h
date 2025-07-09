@@ -1,17 +1,15 @@
-
 #ifndef UNIT_CATEGORY_H
 #define UNIT_CATEGORY_H
 
 #include <string>
 #include <vector>
-#include <memory>
 #include "Unit.h"
 
 class UnitCategory {
 private:
     std::string name;
     std::string baseUnitName;
-    std::vector<std::unique_ptr<Unit>> units;
+    std::vector<Unit> units;  // no pointers, just value storage
 
 public:
     UnitCategory(const std::string& name, const std::string& baseUnitName);
@@ -21,7 +19,7 @@ public:
     
     void addUnit(const std::string& unitName, double conversionFactor);
     const Unit& findUnit(const std::string& unitName) const;
-    
+
     std::vector<std::string> getUnitNames() const;
     size_t getUnitCount() const;
 };

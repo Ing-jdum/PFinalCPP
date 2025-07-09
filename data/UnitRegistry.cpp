@@ -6,6 +6,7 @@ UnitRegistry::UnitRegistry() {
     // TODO: Initialize the registry with default categories
     // Call initializeDefaultCategories() to set up the basic unit categories
     // This constructor should prepare the registry with Distance, Temperature, and Mass categories
+    initializeDefaultCategories();
 }
 
 void UnitRegistry::initializeDefaultCategories() {
@@ -22,7 +23,6 @@ void UnitRegistry::initializeDefaultCategories() {
     // 3. Create Mass category with "gram" as base unit:
     //    - Add: kilogram (1000.0), pound (453.592), ounce (28.3495), ton (1000000.0)
     //
-    // Use std::make_unique to create categories and add them to the categories vector
 }
 
 const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) const {
@@ -30,7 +30,8 @@ const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) 
     // 1. Use std::find_if to search through the categories vector
     // 2. Compare category names using a lambda function
     // 3. Return reference to the category if found, throw exception otherwise
-    // Hint: categories is a vector of unique_ptr, so use ->get() to get raw pointer
+    // Hint: categories is a vector 
+
     throw std::runtime_error("Category not found");
 }
 
