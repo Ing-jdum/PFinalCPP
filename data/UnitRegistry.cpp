@@ -31,6 +31,7 @@ const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) 
     // 2. Compare category names using a lambda function
     // 3. Return reference to the category if found, throw exception otherwise
     // Hint: categories is a vector 
+
     throw std::runtime_error("Category not found");
 }
 
