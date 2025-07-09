@@ -15,13 +15,11 @@ public:
     UnitCategory(const std::string& name, const std::string& baseUnitName);
     
     const std::string& getName() const;
-    const std::string& getBaseUnitName() const;
     
     void addUnit(const std::string& unitName, double conversionFactor);
     const Unit& findUnit(const std::string& unitName) const;
 
     std::vector<std::string> getUnitNames() const;
-    size_t getUnitCount() const;
 };
 
 #endif
