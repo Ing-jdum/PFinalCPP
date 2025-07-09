@@ -9,8 +9,8 @@ class UnitCategory {
 private:
     std::string name;
     std::string baseUnitName;
-    std::vector<Unit> units;  // no pointers, just value storage
-
+    std::vector<Unit> units;  
+    
 public:
     UnitCategory(const std::string& name, const std::string& baseUnitName);
     
