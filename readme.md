@@ -5,9 +5,6 @@
 Este proyecto ya tiene toda la **estructura base implementada**: el menú se abre correctamente, pero aún no hace nada más.  
 Todos los métodos que tienen que implementar **ya están escritos como stubs** (vacíos con comentarios), así que su tarea será completarlos. Yo ya lo hice para asegurarme que funciona y no los pondré a cazar fantasmas.
 
-> 💡 **El profesor no ha cubierto mucho de lo necesario** para este proyecto. Hemos pasado más tiempo hablando del método de evaluación que practicando cómo pedir dos números, validar datos, manejar entradas o crear un menú. Así que sí, hay un saltico… pero sobrevivimos 💪
-
-
 
 
 ## 📦 ¿Cómo descargo el proyecto?
