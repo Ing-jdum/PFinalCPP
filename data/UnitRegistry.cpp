@@ -1,4 +1,5 @@
 #include "UnitRegistry.h"
+#include "../utils/Validation.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -23,6 +24,28 @@ void UnitRegistry::initializeDefaultCategories() {
     // 3. Create Mass category with "gram" as base unit:
     //    - Add: kilogram (1000.0), pound (453.592), ounce (28.3495), ton (1000000.0)
     //
+
+    UnitCategory distance("Distance", "meter");
+    distance.addUnit("kilometer", 1000.0);
+    distance.addUnit("centimeter", 0.01);
+    distance.addUnit("millimeter", 0.001);
+    distance.addUnit("inch", 0.0254);
+    distance.addUnit("foot", 0.3048);
+    categories.push_back(distance);
+
+    // Temperature category (special case, fixed units)
+    UnitCategory temperature("Temperature", "celsius");
+    temperature.addUnit("fahrenheit", 1.0); // Placeholder
+    temperature.addUnit("kelvin", 1.0);     // Placeholder
+    categories.push_back(temperature);
+
+    // Mass category
+    UnitCategory mass("Mass", "gram");
+    mass.addUnit("kilogram", 1000.0);
+    mass.addUnit("pound", 453.592);
+    mass.addUnit("ounce", 28.3495);
+    mass.addUnit("ton", 1'000'000.0);
+    categories.push_back(mass);
 }
 
 const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) const {
@@ -32,7 +55,12 @@ const UnitCategory& UnitRegistry::findCategory(const std::string& categoryName) 
     // 3. Return reference to the category if found, throw exception otherwise
     // Hint: categories is a vector 
 
-    throw std::runtime_error("Category not found");
+    for (const UnitCategory& category : categories) {
+        if (category.getName() == categoryName) {
+            return category;
+        }
+    }
+    throw std::runtime_error("Category not found: " + categoryName);
 }
 
 std::vector<std::string> UnitRegistry::getCategoryNames() const {
@@ -42,8 +70,12 @@ std::vector<std::string> UnitRegistry::getCategoryNames() const {
     // 3. Add each category's name to the vector
     // 4. Return the completed vector
     // This is used by the UI to show available categories to users
+    
     std::vector<std::string> names;
-    return names;
+    for (const UnitCategory& category : categories) {
+        names.push_back(category.getName());
+    }
+    return names;  
 }
 
 bool UnitRegistry::addUnitToCategory(const std::string& categoryName, 
@@ -59,7 +91,23 @@ bool UnitRegistry::addUnitToCategory(const std::string& categoryName,
     // 5. Add the new unit to the category with the calculated factor
     // 6. Return true if successful, false if any step fails
     // Example: Adding "nanometer" with factor 1e-9 relative to "meter"
-    return false;
+    if (!canAddUnitsToCategory(categoryName)) {
+        return false;
+    }
+
+    try {
+        UnitCategory& category = const_cast<UnitCategory&>(findCategory(categoryName));
+        
+        // This will throw if the reference unit doesn't exist
+        const Unit& refUnit = category.findUnit(referenceUnit);
+        
+        double baseFactor = refUnit.getConversionFactor() * conversionFactor;
+        category.addUnit(unitName, baseFactor);
+        
+        return true;
+    } catch (const std::exception& e) {
+        return false;
+    }
 }
 
 bool UnitRegistry::canAddUnitsToCategory(const std::string& categoryName) const {
@@ -68,5 +116,9 @@ bool UnitRegistry::canAddUnitsToCategory(const std::string& categoryName) const 
     // require special formulas (not linear multiplication)
     // All other categories should return true
     // This prevents users from trying to add custom temperature units
-    return true;
+    if(Validation::toLowerCase(categoryName) == "temperature"){
+        return false;
+     } 
+
+     return true;
 }

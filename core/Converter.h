@@ -3,6 +3,8 @@
 #define CONVERTER_H
 
 #include "UnitCategory.h"
+#include "../utils/Validation.h"
+
 
 class Converter {
 public:

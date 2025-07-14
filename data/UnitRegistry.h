@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include "../core/UnitCategory.h"
+#include "../utils/Validation.h"
+
 
 class UnitRegistry {
 private:

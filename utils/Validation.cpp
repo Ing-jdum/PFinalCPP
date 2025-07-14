@@ -13,7 +13,15 @@ bool Validation::isValidDouble(const std::string& str) {
     //    - Optional scientific notation (e/E with optional sign and digits)
     // 3. Use std::regex_match with pattern: R"(^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?))"
     // Examples: "123", "-45.67", "1.23e-4", "+0.5"
-    return false; // Remove this line when implementing
+    if (str.empty()) {
+        return false;
+    }
+
+    // 2. Define a regex for a valid integer: optional sign, then digits
+    std::regex pattern(R"(^[-+]?([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?))");
+
+    // 3. Use regex_match to validate the whole string
+    return std::regex_match(str, pattern);
 }
 
 bool Validation::isValidInt(const std::string& str) {
@@ -24,7 +32,15 @@ bool Validation::isValidInt(const std::string& str) {
     //    - One or more digits
     // 3. Use std::regex_match with pattern: R"(^[-+]?[0-9]+$)"
     // Examples: "123", "-45", "+67"
-    return false; // Remove this line when implementing
+    if (str.empty()) {
+        return false;
+    }
+
+    // 2. Define a regex for a valid integer: optional sign, then digits
+    std::regex pattern(R"(^[-+]?[0-9]+$)");
+
+    // 3. Use regex_match to validate the whole string
+    return std::regex_match(str, pattern);
 }
 
 bool Validation::isValidUnitName(const std::string& name) {
@@ -45,22 +61,50 @@ bool Validation::isValidUnitName(const std::string& name) {
 }
 
 std::string Validation::trim(const std::string& str) {
-    // TODO: Remove whitespace from beginning and end of string
-    // 1. Find the first non-whitespace character using find_first_not_of()
-    //    - Search for characters not in " \t\n\r"
-    // 2. If no non-whitespace found, return empty string
-    // 3. Find the last non-whitespace character using find_last_not_of()
-    // 4. Use substr() to extract the trimmed substring
-    // Example: "  hello world  " becomes "hello world"
-    return ""; // Remove this line when implementing
+    const std::string WHITESPACE = " \t\n\r";
+
+    // Step 1: Find the first non-whitespace character
+    size_t start = 0;
+    bool foundStart = false;
+    for (size_t i = 0; i < str.length(); i++) {
+        if (WHITESPACE.find(str[i]) == std::string::npos) {
+            start = i;
+            foundStart = true;
+            break;
+        }
+    }
+
+    // If no non-whitespace character was found, return empty string
+    if (!foundStart) {
+        return "";
+    }
+
+    // Step 2: Find the last non-whitespace character
+    size_t end = str.length() - 1;
+    for (size_t i = str.length(); i-- > 0;) {
+        if (WHITESPACE.find(str[i]) == std::string::npos) {
+            end = i;
+            break;
+        }
+    }
+
+    // Step 3: Build and return the trimmed string
+    std::string result = "";
+    for (size_t i = start; i <= end; i++) {
+        result += str[i];
+    }
+
+    return result;
 }
 
+
+
 std::string Validation::toLowerCase(const std::string& str) {
-    // TODO: Convert string to lowercase
-    // 1. Create a copy of the input string
-    // 2. Use std::transform with ::tolower to convert each character
-    // 3. Return the transformed string
-    // Example: "Hello World" becomes "hello world"
-    // Hint: std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return ""; // Remove this line when implementing
+    std::string result = str;
+
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+
+    return result;
 }
+
